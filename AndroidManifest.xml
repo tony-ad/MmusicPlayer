@@ -21,13 +21,18 @@
         <activity
             android:name="com.adui.musicplayer.activity.totle"
             android:label="@string/app_name" >
-            <intent-filter>
+            
+        </activity>
+	<activity 
+	    android:name="com.adui.musicplayer.activityAddMenu.Activity"
+	    >
+	    <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
+	</activity>
+        
         <service android:name="com.adui.musicplayer.service.MusicPlayService" >
         </service>
     </application>

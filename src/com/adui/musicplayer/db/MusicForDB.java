@@ -124,53 +124,6 @@ public class MusicForDB {
       return output;
     }
 	
-	/**
-	 * 在数据库中读取 某首音乐信息
-	 * 
-	 */
-	public static Music oneMusic(Context context,String url){
-		Log.d("ZZ", "oneMusic 1");
-		Music musicci = new Music();
-		Cursor cursors = context.getContentResolver().query(
-				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-				new String[] { MediaStore.Audio.Media.TITLE,
-				MediaStore.Audio.Media.DURATION,
-				MediaStore.Audio.Media.ARTIST,
-				MediaStore.Audio.Media._ID,
-				MediaStore.Audio.Media.ALBUM,
-				MediaStore.Audio.Media.DISPLAY_NAME,
-				MediaStore.Audio.Media.DATA,
-				MediaStore.Audio.Media.ALBUM_ID}, 
-				MediaStore.Audio.Media.DATA+"=?", 
-				new String[]{url}, 
-				MediaStore.Audio.Media.ARTIST_KEY);
-		Log.d("ZZ", "oneMusic 2");
-		if(cursors.moveToFirst()){
-		String singer = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-		String MusicN = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
-		int id = cursors.getInt(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-		String zhuanji = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
-		int time = cursors.getInt(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-		Long songid = cursors.getLong(3);
-		Long albumid = cursors.getLong(7);
-		Bitmap bm = MediaUtil.getArtwork(context, songid, albumid,true);
-		Bitmap bb;
-		if(bm==null){
-			bb=null;
-		}else {
-			bb=makeRoundCorner(bm);
-		}
-		Log.d("ZZ", "oneMusic 3");
-		musicci.setBm(bb);
-		musicci.setId(id);
-		musicci.setMusicN(MusicN);
-		musicci.setName(singer);
-		musicci.setTime(time);
-		musicci.setZhuanji(zhuanji);
-		}
-		Log.d("ZZ", "oneMusic 4");
-	return musicci;
 	
-	}
 
 }

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,8 +61,9 @@ public class frag_1 extends Fragment {
 				if(First_Click_ListView_Item){
 					Toast.makeText(mContext, "Ïò×ó»¬ÇÐ»»Ò³Ãæ£¡", Toast.LENGTH_SHORT).show();
 					First_Click_ListView_Item=false;
+					
 				}
-				
+				Log.d("item click", "postion :"+position);
 				MusicPlayService.openService(mContext,position);
 			}
 		});

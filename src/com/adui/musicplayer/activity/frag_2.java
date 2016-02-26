@@ -1,5 +1,7 @@
 package com.adui.musicplayer.activity;
 
+import java.util.List;
+
 import com.adui.mmusic.R;
 import com.adui.musicplayer.db.MusicForDB;
 import com.adui.musicplayer.model.Music;
@@ -43,6 +45,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	private TextView tvSinger;
 	private ImageView iv;
 	private RotateAnimation ra;
+	public List<Music> musicL;
 
 	private final static int setSeekBar = 1; // 用于更新歌曲时间
 	private Message msg; // 用于更新歌曲时间
@@ -83,6 +86,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		v = inflater.inflate(R.layout.activity_musicmaterial, container, false);
 		init();
+		musicL = MusicForDB.getList();
 		return v;
 	}
 
@@ -306,17 +310,15 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d("ZZ", "onReceive");
 			bundle = intent.getExtras();
-			String Url = bundle.getString("urll");
-			Log.d("ZZ", "onReceive 1");
-			Log.d("ZZ", (Url==null)+"");
-			Music musicA = MusicForDB.oneMusic(mContext, Url);
-			Log.d("ZZ", "onReceive 2");
+//			String Url = bundle.getString("urll");
+			int pos = bundle.getInt("urll"); //传递进来的音乐位置
+		
+//			Music musicA = MusicForDB.oneMusic(mContext, Url);
+			
+			Music musicB = musicL.get(pos); //根据位置获取当前音乐Music
 			initView();
-			Log.d("ZZ", "onReceive 3");
-			Set(musicA);
-			Log.d("ZZ", "onReceive OVER");
+			Set(musicB);
 		}
 	}
 

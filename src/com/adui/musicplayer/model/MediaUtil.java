@@ -27,12 +27,24 @@ public class MediaUtil {
     private static Bitmap mCachedBit = null;
 	
 	
+    /**
+     * 获取默认专辑图片
+     * @param context
+     * @return
+     */
 	private static Bitmap getDefaultArtwork(Context context) {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inPreferredConfig = Bitmap.Config.RGB_565;        
         return BitmapFactory.decodeStream(null, null, opts);               
     }
 	
+	/**
+	 * 从文件中获取专辑图片
+	 * @param context
+	 * @param songid
+	 * @param albumid
+	 * @return
+	 */
 	private static Bitmap getArtworkFromFile(Context context, long songid, long albumid) {
         Bitmap bm = null;
         byte [] art = null;
@@ -65,7 +77,14 @@ public class MediaUtil {
         return bm;
     }
 	
-	
+	/**
+	 * 获取专辑图片
+	 * @param context
+	 * @param song_id
+	 * @param album_id
+	 * @param allowdefault
+	 * @return
+	 */
 	public static Bitmap getArtwork(Context context, long song_id, long album_id,
             boolean allowdefault) {
         if (album_id < 0) {

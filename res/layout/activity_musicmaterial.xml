@@ -41,7 +41,7 @@
             android:layout_width="330dp"
             android:layout_height="330dp"
             android:layout_centerInParent="true"
-
+			android:src="@drawable/moren2"
             android:contentDescription="@string/imageviewjs" />
     </RelativeLayout>
 
