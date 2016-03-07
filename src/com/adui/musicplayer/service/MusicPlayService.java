@@ -32,9 +32,9 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 	private Intent itbr; //to Broadcast
 	private String path; //播放歌曲的路径
 	private List<Music> listForMusic; //音乐列表内容
-	private int ListenerForModel=2; //播放模式
+	private int ListenerForModel=0; //播放模式
 	private boolean isNext=true;
-//	private ServiceBR sbr; //广播
+	private ServiceBR sbr; //广播
 	
 	/**
 	 * 与活动绑定之后，可提供方法
@@ -52,7 +52,7 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 		public void nextt(){
 			isNext=true;
 			Log.d("item click", "nextt");
-			if(ListenerForModel==3){
+			if(ListenerForModel==2){
 				choose= (int) (Math.random()*musicLsize);
 				start();
 			}else {
@@ -69,10 +69,10 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 			case 1:
 				start();
 				break;
-			case 2:
+			case 0:
 				onModel12();
 				break;
-			case 3:
+			case 2:
 				choose= (int) (Math.random()*musicLsize);
 				start();
 				break;
@@ -176,10 +176,10 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 //		startForeground(1, n);
 
 		//注册广播
-//		IntentFilter br = new IntentFilter();
-//		br.addAction("com.adui.musicService.COME");
-//		sbr = new ServiceBR();
-//		registerReceiver(sbr, br);
+		IntentFilter br = new IntentFilter();
+		br.addAction("com.adui.musicService.COME");
+		sbr = new ServiceBR();
+		registerReceiver(sbr, br);
 	}
 
 	/**
@@ -193,6 +193,9 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 			mediaPlayer.stop();
 			mediaPlayer.release();
 		}
+		if(sbr !=null){
+			unregisterReceiver(sbr);
+		}
 		super.onDestroy();
 	}
 
@@ -200,6 +203,9 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 	 * 模式1、2的“下一首歌”的播放逻辑
 	 */
 	private void onModel12(){
+		
+		//如果有下一首，就播放下一首；没有则从第一首开始
+		
 		Log.d("item click", "onModel");
 		if (currIndex + 1 < musicLsize) {
 			choose = currIndex + 1;
@@ -207,6 +213,7 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 		} else {
 			choose=0;
 			start();
+			Toast.makeText(MusicPlayService.this, "不存在下一首歌，已从第一首开始播放！", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -238,10 +245,11 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 	private void start() {
 		Log.d("item click", "服务 - start");
 				if (choose == currIndex) {
-				// 若是true，表示是同一首歌，不进行操作
+				// 若是true，表示是同一首歌
 					if(mediaPlayer.isPlaying()){
 						
 					}else {
+						mBinder.sendgb();
 						mediaPlayer.start();
 					}
 				} else {
@@ -305,15 +313,14 @@ public class MusicPlayService extends Service implements OnCompletionListener {
 		context.startService(i);
 	}
 	
-//	public class ServiceBR extends BroadcastReceiver {
-//
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			// TODO Auto-generated method stub
-//			ListenerForModel=intent.getIntExtra("model", 2);
-//		}
-//	
-//	}
+	public class ServiceBR extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			ListenerForModel=intent.getIntExtra("model", 0);
+		}
+	}
 
 	
 }

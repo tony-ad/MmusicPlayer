@@ -1,14 +1,13 @@
-package com.adui.musicplayer.activityAddMenu;
+package com.adui.musicplayer.activity.oneAcitvity;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.PrivateCredentialPermission;
-
 import com.adui.mmusic.R;
-import com.adui.musicplayer.activity.frag_1;
-import com.adui.musicplayer.activity.frag_2;
 import com.adui.musicplayer.db.MusicForDB;
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.frag_1;
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.frag_2;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,48 +17,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-
 /**
- * 此活动
- * HorizontalScrollView中有菜单栏和ViewPager
- * ViewPager中有2个碎片
- * 
- * @author user
- *
+ * 2个碎片放在ViewPager中
+ * 该活动的内容：只要ViewPager+碎片
  */
-public class Activity extends FragmentActivity{
-	
-	private HorizontalScroll Hview;
-	private MyPager mViewPager;
+public class activityForOne extends FragmentActivity {
+
+	private ViewPager mViewPager;
 	private FragmentPagerAdapter mAdapter;
 	private List<Fragment> mFragemnts;
-
+	
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main_2);
-
-		Hview = (HorizontalScroll) findViewById(R.id.id_menu);
+		setContentView(R.layout.activity_main);
 		MusicForDB.loadMusic(this);
 		init();
 		initViewPager();
-	}
-	
-	public void setpager(){
-		mViewPager.setCurrentItem(0);
-	}
-	
-	public void toggleMenu(View view)
-	{
-		Hview.toggle();
 	}
 	
 	/**
@@ -88,22 +66,23 @@ public class Activity extends FragmentActivity{
 		};
 	}
 
-
 	/**
 	 * 初始化ViewPager
 	 */
 	private void initViewPager() {
 		// TODO Auto-generated method stub
-		mViewPager=(MyPager) findViewById(R.id.mViewPager);
+		mViewPager=(ViewPager) findViewById(R.id.mViewPager);
 		mViewPager.setAdapter(mAdapter);
-		Hview.setMyPager(mViewPager);
-		
 	}
 
 	/**
 	 * 按下键位
 	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		
+		
+		
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			ExitDialog(this).show();
 			return true;

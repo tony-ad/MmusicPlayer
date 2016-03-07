@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.adui.musicplayer.model.MediaUtil;
 import com.adui.musicplayer.model.Music;
+import com.adui.musicplayer.other.FastBlur;
 import com.adui.musicplayer.other.LogUtil;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,8 +18,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 
 //用于查询数据库中的消息
 public class MusicForDB {
@@ -43,6 +50,11 @@ public class MusicForDB {
 		if(cursors.moveToFirst()){
 			do {
 				String singer = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+				
+				if("<unknown>".equals(singer)){
+					singer="未知艺术家";
+				}
+				
 				String MusicN = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
 				int id = cursors.getInt(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
 				String zhuanji = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
@@ -52,12 +64,23 @@ public class MusicForDB {
 				String url = cursors.getString(cursors.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 				Bitmap bm = MediaUtil.getArtwork(context, songid, albumid,true);
 				Bitmap bb;
+				Bitmap bbmohu = null;
+				
 				if(bm==null){
 					bb=null;
+					bbmohu = null;
 				}else {
 					bb=makeRoundCorner(bm);
+					try {
+						
+						bbmohu = blur(context,bm);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					
 				}
 				Music musicci = new Music();
+				musicci.setBmm(bbmohu);
 				musicci.setBm(bb);
 				musicci.setId(id);
 				musicci.setMusicN(MusicN);
@@ -72,6 +95,42 @@ public class MusicForDB {
 
 	}
 
+    /**
+     * 模糊
+     * 参数：要模糊的图片
+     * @param bkg
+     * @param view
+     */
+    @SuppressLint("NewApi")
+	private static Bitmap blur(Context context,Bitmap bkg) {
+        float scaleFactor = 8;
+        float radius = 8;
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    	DisplayMetrics outMetrics = new DisplayMetrics();
+    	wm.getDefaultDisplay().getMetrics(outMetrics);        
+    //根据view原始大小，进行缩小,创建新位图Bitmap
+        Bitmap overlay = Bitmap.createBitmap((int) (bkg.getWidth()/scaleFactor),
+                (int) (bkg.getHeight()/scaleFactor), Bitmap.Config.ARGB_8888);
+        
+        
+        
+    //用指定的位图构造一个画布来绘制
+        Canvas canvas = new Canvas(overlay);
+
+        canvas.scale(1 / scaleFactor, 1 / scaleFactor);
+        
+    //创建画笔，并绘制传入的参数Bitmap
+        Paint paint = new Paint();
+        paint.setFlags(Paint.FILTER_BITMAP_FLAG);
+        canvas.drawBitmap(bkg, 0, 0, paint);
+        
+    //快速模糊
+        overlay = FastBlur.doBlur(overlay, (int)radius, true);
+        return overlay;
+    }
+	
+	
 	/**
 	 * 返回音乐数据列表
 	 */

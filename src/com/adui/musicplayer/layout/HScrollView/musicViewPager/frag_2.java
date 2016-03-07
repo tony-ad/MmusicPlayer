@@ -1,18 +1,20 @@
-package com.adui.musicplayer.activity;
+package com.adui.musicplayer.layout.HScrollView.musicViewPager;
 
 import java.util.List;
 
 import com.adui.mmusic.R;
 import com.adui.musicplayer.db.MusicForDB;
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu.OnMenuItemClickListener;
 import com.adui.musicplayer.model.Music;
 import com.adui.musicplayer.service.MusicPlayService;
-
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,10 +29,17 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+/**
+ * 音乐信息显示页面
+ * 
+ * @author user
+ *
+ */
 public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChangeListener {
 
 	private View v;
@@ -46,6 +55,9 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	private ImageView iv;
 	private RotateAnimation ra;
 	public List<Music> musicL;
+	private LinearLayout ll;
+	private ArcMenu arcMenu;
+	private Music dangqianbofanggequ;
 
 	private final static int setSeekBar = 1; // 用于更新歌曲时间
 	private Message msg; // 用于更新歌曲时间
@@ -63,6 +75,9 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	// musicSOP的值是true时，表示歌曲正在播放
 	private boolean musicStartOrPause = true;
 
+	private int play_model = 0;
+	
+	
 	public frag_2(Context Context) {
 		this.mContext = Context;
 	}
@@ -87,13 +102,15 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		v = inflater.inflate(R.layout.activity_musicmaterial, container, false);
 		init();
 		musicL = MusicForDB.getList();
+		arcMenu = (ArcMenu) v.findViewById(R.id.id_menu);
+		arcMenu.setVisibility(View.GONE);
 		return v;
 	}
 
 	/**
 	 * 绑定服务、注册广播接收器
 	 */
-	private void init(){
+	private void init() {
 		// TODO Auto-generated method stub
 		// 注册广播，此广播mcr接收值为action的广播
 		itbs = new IntentFilter();
@@ -122,7 +139,80 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		tvSinger = (TextView) v.findViewById(R.id.text_singername);
 		seekBar = (SeekBar) v.findViewById(R.id.seekbar);
 		seekBar.setOnSeekBarChangeListener(this);
+		ll = (LinearLayout) v.findViewById(R.id.pager2_mainL);
+		arcMenu = (ArcMenu) v.findViewById(R.id.id_menu);
+		arcMenu.setVisibility(View.VISIBLE);
+		arcMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public void Click(View view, int pos) {
+				// TODO Auto-generated method stub
+				switch (pos) {
+				case 1:
+					Log.d("ioi", dangqianbofanggequ.isIlike()+"  1");
+					dangqianbofanggequ.changeIsLike();
+					Log.d("ioi", dangqianbofanggequ.isIlike()+"  2");
+					if(dangqianbofanggequ.isIlike()==true){
+						//是我喜欢的歌曲的话，则为a7
+						view.setBackgroundResource(R.drawable.ilike);
+					}else {
+						//没有标明喜欢的话，则默认为a0
+						view.setBackgroundResource(R.drawable.morenilike);
+					}
+					
+					break;
+				case 2:
+					switch (play_model) {
+					//0时，是循环；1时，是单曲；2时，是随机
+					
+					case 0:
+						play_model=play_model+1;
+						//变换播放模式，修改图片并发送广播，通知服务播放模式
+						view.setBackgroundResource(R.drawable.danqu);
+						sendSB();
+						break;
+					case 1:
+						play_model=play_model+1;
+						view.setBackgroundResource(R.drawable.suijibofang);
+						sendSB();
+						break;
+					case 2:
+						play_model=0;
+						view.setBackgroundResource(R.drawable.xunhuan);
+						sendSB();
+						break;
+					default:
+						break;
+					}
+					
+					
+					
+					
+					break;
+				case 3:
+
+					break;
+				case 4:
+
+					break;
+				case 5:
+
+					break;
+
+				default:
+					break;
+				}
+			}
+		});
 	}
+	
+	
+	private void sendSB(){
+	Intent sendSb = new Intent("com.adui.musicService.COME");
+	sendSb.putExtra("model", play_model);
+	mContext.sendBroadcast(sendSb);
+}
+	
 
 	// 停止拖动
 	@Override
@@ -130,6 +220,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		// TODO Auto-generated method stub
 		binder.StartOrPause();
 	}
+	
 
 	// 开始拖动(拖动ing)
 	@Override
@@ -270,17 +361,28 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	/**
 	 * 设置文本内容
 	 */
+	@SuppressLint("NewApi")
 	private void changeTextContent(Music maa) {
 		Log.d("ZZ", "changeTextContent");
 		tv2.setText(toTime(maa.getTime()));
 		tvMusicName.setText(maa.getMusicN());
-		tvSinger.setText(maa.getName());
+
+		if (maa.getName().equals("未知艺术家")) {
+			tvSinger.setText(" ");
+		} else {
+			tvSinger.setText(maa.getName());
+		}
 		if (maa.getBm() == null) {
 			iv.setImageResource(R.drawable.moren2);
 		} else {
 			iv.setImageBitmap(maa.getBm());
 		}
-		ra = new RotateAnimation(0, 359,iv.getWidth()/2,iv.getHeight()/2);
+		if (maa.getBmm() == null) {
+			ll.setBackgroundResource(R.drawable.bg1);
+		} else {
+			ll.setBackground(new BitmapDrawable(getResources(), maa.getBmm()));
+		}
+		ra = new RotateAnimation(0, 359, iv.getWidth() / 2, iv.getHeight() / 2);
 		ra.setDuration(30000);
 		ra.setRepeatCount(maa.getTime() / 30000);
 		LinearInterpolator lir = new LinearInterpolator();
@@ -311,14 +413,14 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			bundle = intent.getExtras();
-//			String Url = bundle.getString("urll");
-			int pos = bundle.getInt("urll"); //传递进来的音乐位置
-		
-//			Music musicA = MusicForDB.oneMusic(mContext, Url);
-			
-			Music musicB = musicL.get(pos); //根据位置获取当前音乐Music
+			// String Url = bundle.getString("urll");
+			int pos = bundle.getInt("urll"); // 传递进来的音乐位置
+
+			// Music musicA = MusicForDB.oneMusic(mContext, Url);
+
+			dangqianbofanggequ = musicL.get(pos); // 根据位置获取当前音乐Music
 			initView();
-			Set(musicB);
+			Set(dangqianbofanggequ);
 		}
 	}
 

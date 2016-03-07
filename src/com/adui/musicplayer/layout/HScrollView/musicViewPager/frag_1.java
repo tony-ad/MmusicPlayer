@@ -1,4 +1,4 @@
-package com.adui.musicplayer.activity;
+package com.adui.musicplayer.layout.HScrollView.musicViewPager;
 
 
 import java.util.ArrayList;
@@ -26,6 +26,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * “Ù¿÷—°‘ÒΩÁ√Ê
+ * @author user
+ *
+ */
 public class frag_1 extends Fragment {
 	private View view;
 	private Context mContext;
@@ -78,40 +83,7 @@ public class frag_1 extends Fragment {
 	}
 	
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// TODO Auto-generated method stub
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.music_material, menu);
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		// TODO Auto-generated method stub
-//		int id = item.getItemId();	
-//		switch (id) {
-//		case R.id.action_dq:
-//			model=1;
-//			sendSB();
-//			break;
-//		case R.id.action_sj:
-//			model=3;
-//			sendSB();
-//			break;
-//		case R.id.action_lb:
-//			model=2;
-//			sendSB();
-//			break;
-//
-//		}
-//
-//		return super.onOptionsItemSelected(item);
-//	}
-//	
-//	private void sendSB(){
-//		Intent sendSb = new Intent("com.adui.musicService.COME");
-//		sendSb.putExtra("model", model);
-//		sendBroadcast(sendSb);
-//	}
+
+
+
 }

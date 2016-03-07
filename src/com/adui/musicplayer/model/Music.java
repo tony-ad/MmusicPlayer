@@ -12,10 +12,48 @@ public class Music {
 	private Long aa;
 	private Long bb;
 	private Bitmap bm;
+	private Bitmap bmm;
+	private boolean ilike=false;
+	
+	public void changeIsLike(){
+		if(ilike==true){
+			ilike=false;
+		}else {
+			ilike=true;
+		}
+	}
+	
+	
+	public boolean isIlike() {
+		return ilike;
+	}
+
+
+
+	public void setIlike(boolean ilike) {
+		this.ilike = ilike;
+	}
+
+
+
 	public Music(){
 		
 	}
 	
+	
+	
+	public Bitmap getBmm() {
+		return bmm;
+	}
+
+
+
+	public void setBmm(Bitmap bmm) {
+		this.bmm = bmm;
+	}
+
+
+
 	public Music(String name,String musicN,int time){
 		this.musicN=musicN;
 		this.name=name;

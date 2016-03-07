@@ -1,11 +1,17 @@
-package com.adui.musicplayer.activity;
-
+package com.adui.musicplayer.activity.twoAcitvity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import com.adui.mmusic.R;
 import com.adui.musicplayer.db.MusicForDB;
+import com.adui.musicplayer.layout.HScrollView.HorizontalScroll;
+import com.adui.musicplayer.layout.HScrollView.MyPager;
+import com.adui.musicplayer.layout.HScrollView.leftMenu.menubar;
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.frag_1;
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.frag_2;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,26 +21,57 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-/**
- * 2个碎片放在ViewPager中
- */
-public class totle extends FragmentActivity {
 
-	private ViewPager mViewPager;
+/**
+ * 此活动
+ * HorizontalScrollView中有菜单栏和ViewPager
+ * ViewPager中有2个碎片
+ * 
+ * @author user
+ *
+ */
+public class Activity extends FragmentActivity{
+	
+	private HorizontalScroll Hview;
+	private MyPager mViewPager;
 	private FragmentPagerAdapter mAdapter;
 	private List<Fragment> mFragemnts;
-	
+		
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main_2);
+		Hview = (HorizontalScroll) findViewById(R.id.id_HScroll);
 		MusicForDB.loadMusic(this);
 		init();
 		initViewPager();
+		initMenuFragment();
+	}
+	
+	/**
+	 * 初始化菜单碎片
+	 */
+	private void initMenuFragment() {
+		// TODO Auto-generated method stub
+		Fragment menu_frag = new menubar(Activity.this);
+		getSupportFragmentManager().beginTransaction().add(R.id.layout_menu, menu_frag).commit();
+	}
+	
+	/**
+	 * 切换菜单
+	 * @param view
+	 */
+	public void toggleMenu(View view)
+	{
+		Hview.toggle();
 	}
 	
 	/**
@@ -63,13 +100,16 @@ public class totle extends FragmentActivity {
 		};
 	}
 
+
 	/**
 	 * 初始化ViewPager
 	 */
 	private void initViewPager() {
 		// TODO Auto-generated method stub
-		mViewPager=(ViewPager) findViewById(R.id.mViewPager);
+		mViewPager=(MyPager) findViewById(R.id.mViewPager);
 		mViewPager.setAdapter(mAdapter);
+		Hview.setMyPager(mViewPager);
+		
 	}
 
 	/**

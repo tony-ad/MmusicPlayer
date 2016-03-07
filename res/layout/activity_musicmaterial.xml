@@ -1,110 +1,162 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:arcmenu="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bgis"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
+
     <LinearLayout
+        android:id="@+id/pager2_mainL"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="vertical"
-         >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/text_musicname"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp" 
-            android:layout_marginTop="20dp"
-            />
+            android:layout_height="130dp"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/text_singername"
+            <TextView
+                android:id="@+id/text_musicname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/text_singername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="330dp"
+                android:layout_height="330dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/imageviewjs"
+                android:src="@drawable/moren2" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp" >
+
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/timeF"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_toLeftOf="@id/seekbar"
+                android:text=""
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/timeL"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/seekbar"
+                android:text=""
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp" >
+
+            <Button
+                android:id="@+id/music"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/starttu" />
+
+            <Button
+                android:id="@+id/last"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@id/music"
+                android:background="@drawable/lasttu" />
+
+            <Button
+                android:id="@+id/next"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/music"
+                android:background="@drawable/nexttu" />
+        </RelativeLayout>
     </LinearLayout>
 
-    <RelativeLayout
+    <com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu
+        android:id="@+id/id_menu"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        arcmenu:position="right_bottom"
+        arcmenu:radius="80dp" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/aa" >
+
+            <ImageView
+                android:id="@+id/id_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/arcicon" />
+        </RelativeLayout>
+
         <ImageView
-            android:id="@+id/image"
-            android:layout_width="330dp"
-            android:layout_height="330dp"
-            android:layout_centerInParent="true"
-			android:src="@drawable/moren2"
-            android:contentDescription="@string/imageviewjs" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp" >
-
-        <SeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:id="@+id/timeF"
-            android:layout_width="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_toLeftOf="@id/seekbar"
-            android:text=""
-            android:textColor="#FFFFFF" />
+            android:background="@drawable/morenilike"
+            android:tag="like" />
 
-        <TextView
-            android:id="@+id/timeL"
-            android:layout_width="40dp"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_toRightOf="@id/seekbar"
-            android:text=""
-            android:textColor="#FFFFFF" />
-    </RelativeLayout>
+            android:background="@drawable/xunhuan"
+            android:tag="mode_play" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="90dp" >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/a2"
+            android:tag="Place" />
 
-        <Button
-            android:id="@+id/music"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/starttu" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/a3"
+            android:tag="Sleep" />
+    </com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu>
 
-        <Button
-            android:id="@+id/last"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@id/music"
-            android:background="@drawable/lasttu" />
-
-        <Button
-            android:id="@+id/next"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/music"
-            android:background="@drawable/nexttu" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

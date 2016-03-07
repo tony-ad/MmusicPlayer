@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgis"
-    android:orientation="vertical"
-    > 
-    <ListView 
-        android:id="@+id/listview"
+    android:orientation="vertical" 
+    android:background="#000000"
+    >
+    <FrameLayout 
+        android:id="@+id/menu_item_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        />
+        android:background="#ffffff"
+        >
+    </FrameLayout>
 
 </LinearLayout>

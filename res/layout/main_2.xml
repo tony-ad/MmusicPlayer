@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
 
+    >
 
-    <com.adui.musicplayer.activityAddMenu.HorizontalScroll
-        android:id="@+id/id_menu"
+    <com.adui.musicplayer.layout.HScrollView.HorizontalScroll
+        android:id="@+id/id_HScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -15,19 +16,24 @@
             android:layout_height="match_parent"
             android:orientation="horizontal" >
 
-            <include layout="@layout/at" />
+            <FrameLayout
+                android:id="@+id/layout_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff" >
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <com.adui.musicplayer.activityAddMenu.MyPager
+                <com.adui.musicplayer.layout.HScrollView.MyPager
                     android:id="@+id/mViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
-                </com.adui.musicplayer.activityAddMenu.MyPager>
+                </com.adui.musicplayer.layout.HScrollView.MyPager>
             </LinearLayout>
         </LinearLayout>
-    </com.adui.musicplayer.activityAddMenu.HorizontalScroll>
+  </com.adui.musicplayer.layout.HScrollView.HorizontalScroll>
 
 </LinearLayout>

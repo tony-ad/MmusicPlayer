@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgis"
-    android:orientation="vertical"
-    > 
-    <ListView 
-        android:id="@+id/listview"
+    android:orientation="vertical" >
+    <TextView 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        android:text="登陆界面"
+		android:layout_gravity="center"
+		android:gravity="center"
         />
-
 </LinearLayout>
