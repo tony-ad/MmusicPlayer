@@ -1,5 +1,7 @@
 package com.adui.musicplayer.layout.HScrollView;
 
+import com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu;
+
 import android.app.usage.UsageEvents.Event;
 import android.content.Context;
 import android.graphics.PointF;
@@ -8,15 +10,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class MyPager extends ViewPager {
 
 	MyPager viewpager;
-	private int size = -1;
-	private HorizontalScroll hView;
+	private ArcMenu arcMenu;
 
-	public void setHV(HorizontalScroll hView) {
-		this.hView = hView;
+	public void giveArcMenu(ViewGroup viewGroup) {
+		this.arcMenu=(ArcMenu) viewGroup;
 	}
 
 	public MyPager(Context context, AttributeSet attrs) {
@@ -72,6 +74,11 @@ public class MyPager extends ViewPager {
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			Log.d("caobi", "pager - onInterceptTouchEvent - ACTION_DOWN");
+			//获取菜单是否打开了，打开了就关闭
+			if(arcMenu.returnMenuIsOpen()==true){
+				arcMenu.ToggleMenu(300);
+			}
+			
 			break;
 		case MotionEvent.ACTION_MOVE:
 			Log.d("caobi", "pager - onInterceptTouchEvent - ACTION_MOVE");

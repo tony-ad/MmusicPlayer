@@ -2,11 +2,16 @@ package com.adui.musicplayer.layout.HScrollView.musicViewPager;
 
 
 
+import java.util.List;
+
 import com.adui.mmusic.R;
+import com.adui.musicplayer.db.MusicForDB;
+import com.adui.musicplayer.model.Music;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.opengl.Visibility;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -21,6 +26,8 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 public class ArcMenu extends ViewGroup implements OnClickListener {
@@ -31,6 +38,13 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 	private static final int POS_RIGHT_TOP = 2;
 	private static final int POS_RIGHT_BOTTOM = 3;
 
+	
+	private ImageView iv;
+	private List<Music> musicList;
+	private frag_2 f;
+	private boolean isOpenMenu=false;
+	
+	
 	/**
 	 * 指定主按钮的位置，与布局的控件的position的位置要一致
 	 */
@@ -80,10 +94,10 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 	public ArcMenu(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		mRadius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-
 		// 获取自定义属性
+		musicList= MusicForDB.getList();
 		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ArcMenu, defStyleAttr, 0);
-
+		
 		int pos = a.getInt(R.styleable.ArcMenu_position, POS_RIGHT_BOTTOM);
 		switch (pos) {
 		case POS_LEFT_TOP:
@@ -103,7 +117,7 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 				TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics()));
 		a.recycle();
 	}
-
+	
 	public ArcMenu(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 		// TODO Auto-generated constructor stub
@@ -114,10 +128,15 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void setFrag(frag_2 f){
+		this.f=f;
+	}
+	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// TODO Auto-generated method stub
 		int count = getChildCount();
+		iv = (ImageView) getChildAt(1);
 		for (int i = 0; i < count; i++) {
 			// 测量child
 			measureChild(getChildAt(i), widthMeasureSpec, heightMeasureSpec);
@@ -203,10 +222,17 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 	 */
 	public void onClick(View v) {
 		// mCButton=findViewById(R.id.id_button);
+		Music m = f.getMusicNow();
+		if(m.isIlike()==true){
+			iv.setBackgroundResource(R.drawable.ilike);
+		}else {
+			iv.setBackgroundResource(R.drawable.morenilike);
+		}
 		rotateCButton(v, 0f, 360f, 300);
 		ToggleMenu(300);
 	}
 
+	
 	/**
 	 * 切换菜单:点击菜单时，有动画出现
 	 */
@@ -363,9 +389,24 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 	 */
 	private void changeStatus() {
 		// TODO Auto-generated method stub
-		mCurrentStatus = (mCurrentStatus == Status.CLOSE ? Status.OPEN : Status.CLOSE);
+		if(isOpenMenu==true){
+			isOpenMenu=false;
+			mCurrentStatus = Status.CLOSE;
+		}else {
+			isOpenMenu=true;
+			mCurrentStatus = Status.OPEN;
+		}
+//		mCurrentStatus = (mCurrentStatus == Status.CLOSE ? Status.OPEN : Status.CLOSE);
 	}
 
+	/**
+	 * @return 
+	 * 
+	 */
+	public boolean returnMenuIsOpen(){
+		return isOpenMenu;
+	}
+	
 	/**
 	 * 主按钮的旋转动画
 	 */
@@ -376,11 +417,12 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 		ra.setDuration(duration);
 		ra.setFillAfter(true);
 		v.startAnimation(ra);
-
 	}
 
 	public boolean isOpen() {
 		return mCurrentStatus == Status.OPEN;
 	}
 
+	
+	
 }

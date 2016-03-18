@@ -10,6 +10,7 @@ import com.adui.musicplayer.other.LogUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -92,7 +93,9 @@ public class MusicForDB {
 			} while (cursors.moveToNext());
 
 		}
-
+		Log.d("wwwe", "·¢ËÍ¹ã²¥");
+		Intent i = new Intent("com.adui.musicplayer.aaa");
+		context.sendBroadcast(i);
 	}
 
     /**

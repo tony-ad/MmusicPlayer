@@ -9,6 +9,7 @@ import com.adui.musicplayer.model.Music;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import android.widget.TextView;
 
 public class Adapterfor2 extends ArrayAdapter<Music>{
 	private int resourceId;
+	private List<Music> musicList;
 	public Adapterfor2(Context context, int textViewResourceId, List<Music> objects) {
 		super(context, textViewResourceId, objects);
 		// TODO Auto-generated constructor stub
+		this.musicList=objects;
 		resourceId=textViewResourceId;
 	}
 
@@ -59,6 +62,12 @@ public class Adapterfor2 extends ArrayAdapter<Music>{
 		TextView tv1;
 		TextView tv2;
 		ImageView iv;
+	}
+	
+	public void Update(List<Music> musics){
+		Log.d("button", "update");
+		this.musicList=musics;
+		notifyDataSetChanged();
 	}
 	
 }

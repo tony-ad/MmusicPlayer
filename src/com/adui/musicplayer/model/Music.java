@@ -28,8 +28,6 @@ public class Music {
 		return ilike;
 	}
 
-
-
 	public void setIlike(boolean ilike) {
 		this.ilike = ilike;
 	}

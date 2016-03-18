@@ -1,10 +1,13 @@
 package com.adui.musicplayer.layout.HScrollView.musicViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.adui.mmusic.R;
+import com.adui.musicplayer.activity.MmainActivity;
 import com.adui.musicplayer.db.MusicForDB;
 import com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu.OnMenuItemClickListener;
+import com.adui.musicplayer.model.Gongju;
 import com.adui.musicplayer.model.Music;
 import com.adui.musicplayer.service.MusicPlayService;
 import android.annotation.SuppressLint;
@@ -32,6 +35,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 /**
@@ -58,7 +63,9 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	private LinearLayout ll;
 	private ArcMenu arcMenu;
 	private Music dangqianbofanggequ;
-
+	private MmainActivity activity;
+	
+	
 	private final static int setSeekBar = 1; // 用于更新歌曲时间
 	private Message msg; // 用于更新歌曲时间
 
@@ -75,7 +82,10 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	// musicSOP的值是true时，表示歌曲正在播放
 	private boolean musicStartOrPause = true;
 
+	//播放模式
 	private int play_model = 0;
+	
+	private int position;
 	
 	
 	public frag_2(Context Context) {
@@ -99,19 +109,35 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	};
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d("taa", "frag_2 - onCreateView");
+		activity = (MmainActivity) getActivity();
 		v = inflater.inflate(R.layout.activity_musicmaterial, container, false);
 		init();
-		musicL = MusicForDB.getList();
-		arcMenu = (ArcMenu) v.findViewById(R.id.id_menu);
-		arcMenu.setVisibility(View.GONE);
+		musicL = new ArrayList<Music>();
+		
+		
 		return v;
 	}
 
+	public ViewGroup giveArcMenu(){
+		return arcMenu;
+	}
+	
+	public Music getMusicNow(){
+		return dangqianbofanggequ;
+	}
+	
 	/**
 	 * 绑定服务、注册广播接收器
 	 */
 	private void init() {
 		// TODO Auto-generated method stub
+		
+		arcMenu = (ArcMenu) v.findViewById(R.id.id_menu);
+		arcMenu.setVisibility(View.VISIBLE);
+		arcMenu.setFrag(frag_2.this);
+		activity.aaa();
+		
 		// 注册广播，此广播mcr接收值为action的广播
 		itbs = new IntentFilter();
 		itbs.addAction("com.adui.musicplayer.CHANGE_MUSIC_CONTENT");
@@ -140,8 +166,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		seekBar = (SeekBar) v.findViewById(R.id.seekbar);
 		seekBar.setOnSeekBarChangeListener(this);
 		ll = (LinearLayout) v.findViewById(R.id.pager2_mainL);
-		arcMenu = (ArcMenu) v.findViewById(R.id.id_menu);
-		arcMenu.setVisibility(View.VISIBLE);
+		
 		arcMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
@@ -151,14 +176,20 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 				case 1:
 					Log.d("ioi", dangqianbofanggequ.isIlike()+"  1");
 					dangqianbofanggequ.changeIsLike();
+					Boolean b = dangqianbofanggequ.isIlike();
 					Log.d("ioi", dangqianbofanggequ.isIlike()+"  2");
-					if(dangqianbofanggequ.isIlike()==true){
+					if(b==true){
 						//是我喜欢的歌曲的话，则为a7
 						view.setBackgroundResource(R.drawable.ilike);
 					}else {
 						//没有标明喜欢的话，则默认为a0
 						view.setBackgroundResource(R.drawable.morenilike);
 					}
+					Intent i = new Intent("com.adui.musicplayer.changeList");	
+					i.putExtra("isopen", b); //是否是喜欢的歌曲
+					i.putExtra("posa", position); //歌曲的位置
+					i.putExtra("mmodel", play_model); //播放的模式
+					mContext.sendBroadcast(i);
 					
 					break;
 				case 2:
@@ -190,7 +221,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 					
 					break;
 				case 3:
-
+					showShare();
 					break;
 				case 4:
 
@@ -378,7 +409,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 			iv.setImageBitmap(maa.getBm());
 		}
 		if (maa.getBmm() == null) {
-			ll.setBackgroundResource(R.drawable.bg1);
+			ll.setBackgroundResource(R.drawable.bg2);
 		} else {
 			ll.setBackground(new BitmapDrawable(getResources(), maa.getBmm()));
 		}
@@ -414,16 +445,46 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		public void onReceive(Context context, Intent intent) {
 			bundle = intent.getExtras();
 			// String Url = bundle.getString("urll");
-			int pos = bundle.getInt("urll"); // 传递进来的音乐位置
-
+			position = bundle.getInt("urll"); // 传递进来的音乐位置
+			play_model = bundle.getInt("model"); // 在哪个模式下的pos歌曲
+			musicL = Gongju.whatModelForList(play_model);
 			// Music musicA = MusicForDB.oneMusic(mContext, Url);
 
-			dangqianbofanggequ = musicL.get(pos); // 根据位置获取当前音乐Music
+			dangqianbofanggequ = musicL.get(position); // 根据位置获取当前音乐Music
 			initView();
 			Set(dangqianbofanggequ);
 		}
 	}
 
+	
+	private void showShare() {
+		 ShareSDK.initSDK(mContext);
+		 OnekeyShare oks = new OnekeyShare();
+		 //关闭sso授权
+		 oks.disableSSOWhenAuthorize(); 
+
+		// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+		 //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+		 // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		 oks.setTitle("分享一下");
+		 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+//		 oks.setTitleUrl("http://sharesdk.cn");
+		 // text是分享文本，所有平台都需要这个字段
+		 oks.setText("我是分享文本");
+		 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+		 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+		 // url仅在微信（包括好友和朋友圈）中使用
+//		 oks.setUrl("http://sharesdk.cn");
+		 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+		 oks.setComment("我是测试评论文本");
+		 // site是分享此内容的网站名称，仅在QQ空间使用
+		 oks.setSite(getString(R.string.app_name));
+		 // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+//		 oks.setSiteUrl("http://sharesdk.cn");
+		// 启动分享GUI
+		 oks.show(mContext);
+		 }
+	
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub

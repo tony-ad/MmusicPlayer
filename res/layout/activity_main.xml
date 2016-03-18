@@ -1,14 +1,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-     >
+    android:layout_height="match_parent" >
 
-    <android.support.v4.view.ViewPager
+    <com.adui.musicplayer.layout.HScrollView.HorizontalScroll
+        android:id="@+id/id_HScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mViewPager"
-        >        
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+            <com.adui.musicplayer.layout.HScrollView.MyPager
+                android:id="@+id/mViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+           </com.adui.musicplayer.layout.HScrollView.MyPager>
+
+            <FrameLayout
+                android:id="@+id/HScroll_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#cfeeff" >
+				<Button 
+				    android:id="@+id/ceButon"
+				    android:layout_width="200dp"
+				    android:layout_height="100dp"
+				    android:layout_gravity="center"
+				    android:text="Button"
+				    />
+            </FrameLayout>
+            <FrameLayout 
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/HScroll_2"
+                android:background="#ffaacc"
+                >
+				<Button 
+				    android:id="@+id/ceButon2"
+				    android:layout_width="200dp"
+				    android:layout_height="100dp"
+				    android:layout_gravity="center"
+				    android:text="Button2"
+				    />
+            </FrameLayout>
+        </LinearLayout>
+    </com.adui.musicplayer.layout.HScrollView.HorizontalScroll>
 
 </LinearLayout>

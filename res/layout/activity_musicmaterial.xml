@@ -124,7 +124,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/aa" >
+             >
 
             <ImageView
                 android:id="@+id/id_button"
@@ -135,28 +135,23 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:background="@drawable/morenilike"
             android:tag="like" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:background="@drawable/xunhuan"
-            android:tag="mode_play" />
+            android:tag="mode_musicplay" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/a2"
-            android:tag="Place" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/a3"
-            android:tag="Sleep" />
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:background="@drawable/share"
+            android:tag="share" />
+        
     </com.adui.musicplayer.layout.HScrollView.musicViewPager.ArcMenu>
 
 </RelativeLayout>
