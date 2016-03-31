@@ -2,6 +2,7 @@ package com.adui.musicplayer.layout.HScrollView.musicViewPager;
 
 
 
+
 import java.util.List;
 
 import com.adui.mmusic.R;
@@ -422,7 +423,5 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
 	public boolean isOpen() {
 		return mCurrentStatus == Status.OPEN;
 	}
-
-	
 	
 }

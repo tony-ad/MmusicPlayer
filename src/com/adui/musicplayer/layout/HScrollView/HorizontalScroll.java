@@ -3,6 +3,7 @@ package com.adui.musicplayer.layout.HScrollView;
 import com.nineoldandroids.view.ViewHelper;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -80,7 +81,8 @@ public class HorizontalScroll extends HorizontalScrollView {
 			mContent = (ViewGroup) mWapper.getChildAt(0);
 			mMenu_1 = (ViewGroup) mWapper.getChildAt(1);
 			mMenu_2 = (ViewGroup) mWapper.getChildAt(2);
-			MenuWidth = mMenu_1.getLayoutParams().width = mSreeWidth - MenuLightPad;
+//			MenuWidth = mMenu_1.getLayoutParams().width = mSreeWidth - MenuLightPad;
+			MenuWidth = mMenu_1.getLayoutParams().width = mSreeWidth;
 			mMenu_2.getLayoutParams().width = mSreeWidth;
 			mContent.getLayoutParams().width = mSreeWidth;
 			once = true;
@@ -127,6 +129,7 @@ public class HorizontalScroll extends HorizontalScrollView {
 				return true;
 			}
 			Log.d("view", "isOpen is + " + isOpen + ";isOpen2 is " +isOpen2);
+			
 			view2.dispatchTouchEvent(ev);
 			return true;
 		}
@@ -150,7 +153,7 @@ public class HorizontalScroll extends HorizontalScrollView {
 	public void openMenu() {
 		if (isOpen)
 			return;
-		this.smoothScrollTo(mSreeWidth - MenuLightPad, 0);
+		this.smoothScrollTo(mSreeWidth, 0);
 		isOpen = true;
 		// mMenu.setVisibility(View.VISIBLE);
 	}
@@ -179,6 +182,15 @@ public class HorizontalScroll extends HorizontalScrollView {
 		return isOpen;
 	}
 
+	/**
+	 * 使滚动条在某个位置
+	 */
+	public void onMenu2(){
+		this.smoothScrollTo(mSreeWidth + mSreeWidth, 0);
+		isOpen2=true;
+		isOpen=true;
+	}
+	
 	public boolean getisOpen2() {
 		return isOpen2;
 	}
@@ -186,15 +198,17 @@ public class HorizontalScroll extends HorizontalScrollView {
 	public void openMenu2() {
 		if (isOpen2)
 			return;
-		this.smoothScrollTo(mSreeWidth + MenuWidth, 0);
+		this.smoothScrollTo(mSreeWidth + mSreeWidth, 0);
 		isOpen2 = true;
 	}
 
+	
+	
 	// 关闭
 	public void closeMenu2() {
 		if (!isOpen)
 			return;
-		this.smoothScrollTo(mSreeWidth - MenuLightPad, 0);
+		this.smoothScrollTo(mSreeWidth, 0);
 		isOpen2 = false;
 		// mMenu.setVisibility(View.GONE);
 	}
@@ -209,7 +223,7 @@ public class HorizontalScroll extends HorizontalScrollView {
 			openMenu2();
 		}
 	}
-
+	
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		// TODO Auto-generated method stub

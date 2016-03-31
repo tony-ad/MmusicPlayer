@@ -47,6 +47,10 @@ public class frag_1 extends Fragment implements OnClickListener {
 	public List<Music> musicList_ilike;
 	private ImageButton imageButton;
 	private MmainActivity mActivity;
+	
+	private int[] R_Id_Button = new int[]{R.id.music_all,R.id.music_ilike};
+	private Button[] buttons = new Button[R_Id_Button.length];
+	
 	private Button music_ilike;
 	private Button music_all;
 	private ImageButton imageButton2;
@@ -104,7 +108,6 @@ public class frag_1 extends Fragment implements OnClickListener {
 		}
 		ft.commit();
 	}
-
 	private void hide(FragmentTransaction ft) {
 		if(fragment_ilikemusic!= null){
 			ft.hide(fragment_ilikemusic);
@@ -121,10 +124,12 @@ public class frag_1 extends Fragment implements OnClickListener {
 		imageButton2 = (ImageButton) view.findViewById(R.id.menu_ImageButton_query);
 		imageButton2.setOnClickListener(this);
 		mActivity = (MmainActivity) getActivity();
-		music_all = (Button) view.findViewById(R.id.music_all);
-		music_ilike = (Button) view.findViewById(R.id.music_ilike);
-		music_all.setOnClickListener(this);
-		music_ilike.setOnClickListener(this);
+
+		for(int i=0;i<R_Id_Button.length;i++){
+			buttons[i] = (Button) view.findViewById(R_Id_Button[i]);
+			buttons[i].setId(i);
+			buttons[i].setOnClickListener(this);
+		}
 	}
 
 	@Override
@@ -132,15 +137,19 @@ public class frag_1 extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.menu_ImageButton:
-//			mActivity.menu_1_OpenAndClose();
+			mActivity.menu_1_OpenAndClose();
+			break;
+			
+		case R.id.menu_ImageButton_query:
+			
 			break;
 
 		case R.id.music_all:
-			initFrag(0);
+//			initFrag(0);
 			break;
 
 		case R.id.music_ilike:
-			initFrag(1);
+//			initFrag(1);
 			break;
 
 		default:

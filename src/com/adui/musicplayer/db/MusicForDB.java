@@ -9,9 +9,11 @@ import com.adui.musicplayer.other.FastBlur;
 import com.adui.musicplayer.other.LogUtil;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,6 +23,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
+import android.text.TextDirectionHeuristic;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -29,11 +32,13 @@ import android.view.WindowManager;
 //用于查询数据库中的消息
 public class MusicForDB {
 	private static List<Music> musicList;
+	private static DBHelper dbHelper;
 	
 	/**
 	 * 在数据库中读取音乐信息，并遍历逐个把音乐添加到列表，最后返回列表
 	 */
-	public static void loadMusic(Context context) {
+	public static void loadMusic(Context context,DBHelper DbHelper) {
+		dbHelper=DbHelper;
 		musicList = new ArrayList<Music>();
 		Cursor cursors = context.getContentResolver().query(
 				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -90,6 +95,20 @@ public class MusicForDB {
 				musicci.setZhuanji(zhuanji);
 				musicci.setUrl(url);
 				musicList.add(musicci);
+				
+				SQLiteDatabase database = DbHelper.getWritableDatabase();
+				ContentValues values = new ContentValues();
+				
+				
+		        values.put("name", singer);
+		        values.put("musicN", MusicN);
+		        values.put("time", time);
+		        values.put("url", url);		        
+		        values.put("zhuanji", zhuanji);
+		        database.insert("music_tb", null, values);
+		        values.clear();
+				
+				
 			} while (cursors.moveToNext());
 
 		}
@@ -97,8 +116,9 @@ public class MusicForDB {
 		Intent i = new Intent("com.adui.musicplayer.aaa");
 		context.sendBroadcast(i);
 	}
-
-    /**
+	
+	
+	/**
      * 模糊
      * 参数：要模糊的图片
      * @param bkg

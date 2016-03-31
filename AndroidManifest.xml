@@ -57,7 +57,7 @@
 	
         <service android:name="com.adui.musicplayer.service.MusicPlayService" >
         </service>
-        
+        <service android:name="com.adui.musicplayer.activity.MmainActivity$CloseService"></service>
         
         
         

@@ -1,7 +1,10 @@
 package com.adui.musicplayer.activity;
 
 import com.adui.mmusic.R;
+import com.adui.musicplayer.db.DBHelper;
+import com.adui.musicplayer.db.Loader_User;
 import com.adui.musicplayer.db.MusicForDB;
+import com.adui.musicplayer.model.Gongju;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ReceiverCallNotAllowedException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +28,7 @@ import android.view.WindowManager;
 public class ActivityOfgg extends Activity {
 
 	private Receiver receiver;
+	private static SQLiteDatabase db;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -36,20 +41,24 @@ public class ActivityOfgg extends Activity {
 		registerReceiver(receiver, intentFilter);
 		Log.d("wwwe", "注册广告完成");	
 		
+		final DBHelper dbHelper = new DBHelper(ActivityOfgg.this, "MusicStore.db", null, 1);
+		
+		db = dbHelper.getWritableDatabase();
+		Gongju.setGongju(db);
+		
+		
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				Log.d("wwwe", "run");	
-				MusicForDB.loadMusic(ActivityOfgg.this);
+				MusicForDB.loadMusic(ActivityOfgg.this,dbHelper);
 			}
 		}).start();
 		
 	}
 
-	
-	
 	private void start(){
 		Log.d("wwwe", "start()");
 		Intent i = new Intent(ActivityOfgg.this,MmainActivity.class);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>  
+    <string-array name="time">  
+        <item>1分钟</item>
+        <item>15分钟</item>  
+        <item>30分钟</item>  
+        <item>60分钟</item> 
+        <item>取消睡眠设置</item> 
+    </string-array>  
+</resources>  

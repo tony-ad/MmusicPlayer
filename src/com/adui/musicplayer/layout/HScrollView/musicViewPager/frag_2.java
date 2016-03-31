@@ -137,6 +137,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		arcMenu.setVisibility(View.VISIBLE);
 		arcMenu.setFrag(frag_2.this);
 		activity.aaa();
+		arcMenu.setVisibility(View.INVISIBLE);
 		
 		// 注册广播，此广播mcr接收值为action的广播
 		itbs = new IntentFilter();
@@ -392,6 +393,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 	/**
 	 * 设置文本内容
 	 */
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	private void changeTextContent(Music maa) {
 		Log.d("ZZ", "changeTextContent");
@@ -411,7 +413,10 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		if (maa.getBmm() == null) {
 			ll.setBackgroundResource(R.drawable.bg2);
 		} else {
-			ll.setBackground(new BitmapDrawable(getResources(), maa.getBmm()));
+			BitmapDrawable bd = new BitmapDrawable(maa.getBmm());
+		    ll.setBackgroundDrawable(bd);
+//			ll.setBackground(new BitmapDrawable(getResources(), maa.getBmm()));
+//			ll.setBackgroundDrawable(background);
 		}
 		ra = new RotateAnimation(0, 359, iv.getWidth() / 2, iv.getHeight() / 2);
 		ra.setDuration(30000);
@@ -419,6 +424,7 @@ public class frag_2 extends Fragment implements OnClickListener, OnSeekBarChange
 		LinearInterpolator lir = new LinearInterpolator();
 		ra.setInterpolator(lir);
 		iv.setAnimation(ra);
+		arcMenu.setVisibility(View.VISIBLE);
 	}
 
 	/**
